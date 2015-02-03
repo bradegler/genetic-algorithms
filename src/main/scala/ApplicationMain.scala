@@ -1,8 +1,6 @@
-package com.barfight
-
-
-import Crossovers._
-import Fitnesses._
+import model._
+import model.Crossovers._
+import model.Fitnesses._
 
 object ApplicationMain extends App {
   val target = "my milkshake brings all the boys to the yard"
