@@ -1,9 +1,9 @@
 package model
 
-case class DNA[A](genes: List[A])
+case class DNA[A](genes: Seq[A])
 
 object DNA {
   def initial[A](geneCount: Int, initializer: (Int => A)): DNA[A] = {
-    new DNA(0.until(geneCount).map(initializer).toList)
+    new DNA(0.until(geneCount).map(initializer))
   }
 }

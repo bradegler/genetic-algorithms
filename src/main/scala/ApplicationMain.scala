@@ -9,5 +9,13 @@ object ApplicationMain extends App {
   val mutationRate = 0.01f;
   val geneCount = target.size
 
-  Simulation(populationCount, mutationRate, maxIterations, geneCount, (i => (scala.util.Random.nextInt(96) + 32).toChar), linear(target), intelligentDesign(target)).run
+  Simulation(
+  	populationCount, 
+  	mutationRate, 
+  	maxIterations, 
+  	geneCount, 
+  	(i => (scala.util.Random.nextInt(96) + 32).toChar), 
+  	linear(target), 
+  	intelligentDesign(target)
+  ).run
 }
