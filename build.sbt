@@ -2,7 +2,7 @@ name := """ai"""
 
 version := "1.0"
 
-scalaVersion := "2.11.5"
+scalaVersion := "2.11.6"
 
 val akkaVersion = "2.3.8"
 

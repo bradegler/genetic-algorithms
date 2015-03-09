@@ -3,20 +3,19 @@ package model
 object Fitnesses {
 
     /**
+     * Rank the two sequences by the number of matches
+     */
+    def rank[A](source: Seq[A], target: Seq[A]): Float = {
+        source.zip(target).foldLeft(0f)((acc, t) => if(t._1 == t._2) acc + 1 else acc)
+    }
+
+    /**
      * Calculates fitness as an equation
      * where each match of a gene to the target
      * produces a linear increase in fitness score.
      */
     def linear[A](target: Seq[A])(dna: DNA[A]): Float = {
-        var score: Float = 0
-        var tgt = target
-        for (g <- dna.genes) {
-            if (g == tgt.head) {
-                score = score + 1
-            }
-            tgt = tgt.tail
-        }
-        score / target.length
+        rank(dna.genes, target) / target.length
     }
 
     /**
@@ -25,14 +24,7 @@ object Fitnesses {
      * produces an exponential increase in fitness score.
      */
     def exponential[A](target: Seq[A])(dna: DNA[A]): Float = {
-        var score: Float = 0
-        var tgt = target
-        for (g <- dna.genes) {
-            if (g == tgt.head) {
-                score = score + 1
-            }
-            tgt = tgt.tail
-        }
+        val score = rank(dna.genes, target)
         (score * score) / (target.length * target.length)
     }
 
