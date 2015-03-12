@@ -21,6 +21,9 @@ class Terminator(ref: ActorRef) extends Actor with ActorLogging {
 }
 
 object ApplicationMain extends App {
+
+    val scenario = Scenario(2048, 16384, 0.8f, 0.1f, 0.03f)
+
     val target = "my milkshake brings all the boys to the yard"
     val maxIterations = 500
     val populationCount = 1000

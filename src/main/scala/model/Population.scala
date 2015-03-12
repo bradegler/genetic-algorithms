@@ -40,6 +40,9 @@ object Population {
         new Population[A](PopulationMeta(size, mutationRate), geneCount, geneMutator, fitness, crossover, pop)
     }
     def winner[A](pop: Population[A], dna: DNA[A]) = {
-        new Population[A](pop.meta, pop.geneCount, pop.geneMutator, pop.fitness, pop.crossover, List(dna))
+        Population.withDNA(pop, List(dna))
+    }
+    def withDNA[A](pop: Population[A], dnaList: List[DNA[A]]): Population[A] = {
+        new Population[A](pop.meta, pop.geneCount, pop.geneMutator, pop.fitness, pop.crossover, dnaList)
     }
 }
