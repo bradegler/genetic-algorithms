@@ -6,31 +6,28 @@ import model._
 
 import akka.actor._
 
-class EvolutionActor extends Actor with ActorLogging with EvolutionHandler
+class EvolutionActor(val scenario: Scenario) extends Actor with ActorLogging with EvolutionHandler
 {
     def receive() = {
-        case Evolve(pop) => handleMessage(pop)
-        case _ =>
+        case StartEvolution(pop) => self ! Evolve(0, pop, sender)
+        case Evolve(generation, pop, sender) if generation > scenario.maxGenerations => sender ! SimulationComplete(pop)
+        case Evolve(generation, pop, sender) => context.actorOf(PopulationFSM.props(scenario, Generation(generation, pop), sender)) ! BeginEvolution
+        case CompletedEvolution(gen, res, sender) => handle(gen, res, sender)
     }
 }
 
 object EvolutionActor {
-    def props: Props = Props(new EvolutionActor)
+    def props(scenario: Scenario): Props = Props(new EvolutionActor(scenario))
 }
 
 trait EvolutionHandler {
+    this: EvolutionActor =>
 
-    def handleMessage[A](pop: Population[A]): Population[A] = {
-        // Mate
-        val rand = scala.util.Random
-        // Build the mating pool
-        val pool = pop.dnaList.map(p => 0.until((pop.fitness(p) * 100).toInt).map(i => p)).flatten
-        // Crossover
-        val crossedDNA = 0.until(pop.meta.size).map(i => pop.crossover(pool(rand.nextInt(pool.size)), pool(rand.nextInt(pool.size)))).toList
-        // Mutation function
-        def m(a: A): A = if (rand.nextFloat() < pop.meta.mutationRate) pop.geneMutator(0) else a
-        // Mutate
-        val newDNA = 0.until(pop.meta.size).map(p => DNA.initial(pop.geneCount, i => m(crossedDNA(p).genes(i)))).toList
-        Population.withDNA(pop, newDNA)
+    def handle[A](gen: Generation[A], res: GenerationResult[A], sender: ActorRef): Unit = {
+        println(res)
+        res.bestFitness match {
+            case 1.0 => sender ! SimulationComplete(Population.winner(gen.pop, res.bestDNA.get))
+            case _ => self ! Evolve(gen.id + 1, gen.pop, sender)
+        }
     }
 }

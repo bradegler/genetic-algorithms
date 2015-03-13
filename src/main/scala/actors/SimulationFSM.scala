@@ -50,11 +50,10 @@ trait SimulationBehaviors {
 
     val runBehavior: StateFunction = {
         case Event(SimulationRun, m: SimulationData) => {
-            m.simulation.run
-            self ! SimulationComplete
+            context.actorOf(EvolutionActor.props(m.simulation.scenario)) ! StartEvolution(m.simulation.pop)
             stay()
         }
-        case Event(SimulationComplete, m: SimulationMeta) =>
+        case Event(SimulationComplete(pop), m: SimulationMeta) =>
             goto(Complete) using(m)
     }
 }

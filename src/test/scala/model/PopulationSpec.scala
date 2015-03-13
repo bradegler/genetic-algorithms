@@ -21,8 +21,9 @@ The 'Population' object winner method should
 
                                                                                                         """
 
-    val mut = (x: Int) => x.toString
-    val initial = Population.initial[String](1, 0.0f, 10, mut, Fitnesses.linear(Seq("test")), Crossovers.randomFlip)
+    val seed = (x: Int) => x.toString
+    val mut = (x: String) => x.toString
+    val initial = Population.initial[String](1, 0.0f, 10, seed, mut, Fitnesses.linear(Seq("test")), Crossovers.randomFlip)
     def init1 = initial.meta.size === 1
     def init2 = initial.meta.mutationRate === 0.0f
     def init3 = initial.geneCount === 10

@@ -1,6 +1,8 @@
 package model
 
 case class Scenario(
+    // The number of genes in a dna strand
+    dnaSize: Int,
     // The size of the simulation population
     populationSize: Int,
     // The maximum number of generations for the simulation.
