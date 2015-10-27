@@ -4,7 +4,7 @@ version := "1.0"
 
 scalaVersion := "2.11.6"
 
-val akkaVersion = "2.3.8"
+val akkaVersion = "2.3.9"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
 
